@@ -1,0 +1,18 @@
+<div *ngIf="!gameReady" id="begin-game" class="d-flex justify-content-center align-items-center">
+    <button (click)='getNewDeck()' type="button" class="btn btn-primary">Begin Playing Blackjack</button>
+</div>
+
+<div *ngIf="gameReady" class="container">
+    <h3 class="py-3">Blackjack Game Started!</h3>
+    <hr>
+    <app-hand #dealerHand name='Dealer'></app-hand>
+    <app-hand #playerHand name='Player'
+    (playerFinished)="dealerDraws($event)"
+    (endGame)='endGame($event)'    
+    ></app-hand>
+</div>
+
+<div *ngIf="displayWinner" >
+    {{ winner }} has won the game!
+    <button (click)='getNewDeck()' type="button" class="btn btn-primary">Play Another Round!</button>
+</div>

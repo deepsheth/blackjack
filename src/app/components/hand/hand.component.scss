@@ -1,0 +1,15 @@
+.card-wrapper {
+    overflow: hidden;
+    width: 75px;
+    transition: 300ms;
+}
+
+.card-wrapper:hover {
+    width: 111px;
+    overflow: visible;
+    transition: 300ms;
+}
+
+#hand {
+    min-height: 160px;
+}

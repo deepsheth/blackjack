@@ -1,0 +1,6 @@
+<div class="img-wrapper" [ngClass]="{'bg-dark border border-white': faceDown}" (click)="toggleCardDirection()">
+  <img 
+  [src]="faceDown ?  '' : imageUrl"
+  [hidden]="faceDown"
+  alt="Card Face" class="justify-content-start">
+</div>
