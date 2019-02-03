@@ -16,7 +16,8 @@ export class DeckofcardsService {
   // todo: env variables
   // newDeckUrl = env.newDeckUrl;
 
-  //todo: add models
+  // todo: add models
+  // todo: new deck if no more remaining cards
   
   getNewDeck(count=1) {
     const deck: Observable<any> =  this.http.get<any>('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=' + count);

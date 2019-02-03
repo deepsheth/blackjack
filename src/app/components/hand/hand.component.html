@@ -1,7 +1,10 @@
-<div class="p-2" id="hand">
+<div id="hand">
+  <div *ngIf="handSum > 21 && name !== 'Dealer'" display="relative" id="game-popup">Bust!</div>
+  <div *ngIf="handSum == 21 && name !== 'Dealer'" display="relative" id="game-popup">BLACKJACK!</div>
+
   <div class="my-2">
     <strong class="px-2 text-light">{{name}}'s Hand <span *ngIf="handSum == 0">is empty.</span></strong>
-    <span class="badge badge-pill badge-info">Sum: {{handSum}}</span>
+    <span class="badge badge-pill badge-dark">Sum: {{handSum}}</span>
   </div>
   <div class="d-inline-flex">
     <div class="card-wrapper" *ngFor="let card of cards; let i = index; trackBy: trackCardFace" [ngStyle]="{'transform': 'translate('+ (0) +'em)'}">
@@ -10,9 +13,9 @@
   </div>
 </div>
 
-<div *ngIf="name == 'Player'">
-  <button (click)='drawNewCard().subscribe()' class="btn mx-2" [disabled]="handSum > 21 || standing"
+<div *ngIf="name == 'Player'" class="my-3">
+  <button (click)='drawNewCard().subscribe()' class="btn mx-2" [disabled]="handSum >= 21 || standing"
     [ngClass]="{'btn-light': handSum <= 16, 'btn-outline-warning': handSum > 16}">Hit</button>
-  <button (click)='stand();' class="btn btn-light mx-2" [disabled]="handSum > 21 || standing">Stand</button>
-  <button [hidden]="21 > handSum && !standing" (click)='restart.emit()' type="button" class="btn btn-light mx-2">Restart</button>
+  <button (click)='stand();' class="btn btn-light mx-2" [disabled]="handSum >= 21 || handSum == 0 || standing">Stand</button>
+  <button [hidden]="21 > handSum && !standing" (click)='restart.emit()' type="button" class="btn btn-light shadow mx-2">Restart</button>
 </div>

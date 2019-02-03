@@ -46,7 +46,9 @@ export class HandComponent implements OnInit {
   drawNewCard(faceDown = false) {
     const $drawNewCard = this.cardService.drawCard().pipe(
       tap(card => {
-        card.cards[0].faceDown = faceDown;
+        if (this.cards.length <= 2) {
+          card.cards[0].faceDown = faceDown;
+        }
         this.cards = this.cards.concat(card.cards);
         this.getHandSum();
 
@@ -112,7 +114,7 @@ export class HandComponent implements OnInit {
   }
 
   public trackCardFace(index: number, item: Card) {
-    return item.faceDown;
+    return item ? item.faceDown : undefined;
   }
 
   reset() {

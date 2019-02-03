@@ -7,3 +7,8 @@ img {
     width: 113px;
     border-radius: 8px;
 }
+
+.card-back {
+    background: url('/assets/card-back.png') no-repeat center center;
+    background-size: contain;
+}
