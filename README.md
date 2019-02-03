@@ -1,6 +1,6 @@
 # Blackjack
 
-This is a Blackjack web app with only cards &mdash; no gambling! Go ahead and play the game.
+This is a Blackjack web app with only cards &mdash; no gambling! Go ahead and [play the game](https://deepsheth.github.io/blackjack/).
 
 ## Screenshots
 ![Player Winning Screenshot](/src/assets/screenshot-celebration.png "Player Winning Screenshot")
