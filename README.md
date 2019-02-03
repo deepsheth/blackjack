@@ -1,5 +1,26 @@
 # Blackjack
 
+This is a Blackjack web app with only cards &mdash; no gambling! Go ahead and play the game.
+
+## Screenshots
+![Player Winning Screenshot](/src/assets/screenshot-celebration.png "Player Winning Screenshot")
+![Player Busting Screenshot](/src/assets/screenshot-bust.png "Player Losing Screenshot")
+
+## Gameplay
+This game follows the standard rules of Blackjack. The one difference is that an Ace has a value of 10. Also, the more "advanced" Blackjack strategies such as splitting, doubling, etc. are not implemented since there is no betting or buying in.
+
+## Dev Tools
+I built this app as a weekend project with Angular and the [Deck of Cards API](https://deckofcardsapi.com/).
+
+## Potential New Features & Dev Work
+- Get a new shuffled deck once the current deck runs out. Currently, once all cards are exhausted, the web app must be refreshed to get a new deck from the API.
+- Make the Ace worth either 11 or a 1
+- Toggle a hint feature to show the [optimal strategy](https://www.blackjackapprenticeship.com/blackjack-strategy-charts/)
+- Leverage the existing localStroage package to store the current hand state of a player
+- Create Models for Cards, Hands, and Players
+- Support multiple players against the dealer
+- Add chips and betting
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
 
 ## Development server
