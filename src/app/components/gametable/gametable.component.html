@@ -1,18 +1,20 @@
+<h3 id="title" class="py-3 text-light">Blackjack</h3>
 <div *ngIf="!gameReady" id="begin-game" class="d-flex justify-content-center align-items-center">
-    <button (click)='getNewDeck()' type="button" class="btn btn-primary">Begin Playing Blackjack</button>
+  <button (click)='getNewDeck()' type="button" class="btn btn-light btn-lg mb-5 p-3">Start Game</button>
 </div>
 
-<div *ngIf="gameReady" class="container">
-    <h3 class="py-3">Blackjack Game Started!</h3>
-    <hr>
-    <app-hand #dealerHand name='Dealer'></app-hand>
-    <app-hand #playerHand name='Player'
-    (playerFinished)="dealerDraws($event)"
-    (endGame)='endGame($event)'    
-    ></app-hand>
-</div>
-
-<div *ngIf="displayWinner" >
-    {{ winner }} has won the game!
-    <button (click)='getNewDeck()' type="button" class="btn btn-primary">Play Another Round!</button>
+<div id="confetti-origin" #confettiOrigin></div>
+<div *ngIf="gameReady" class="container text-center">
+  <div class="row">
+    <button (click)='restart()' type="button" class="btn btn-light mr-4 ">
+      <span *ngIf="displayWinner">Play again!</span>
+      <span *ngIf="!displayWinner">Restart</span>
+    </button>
+    <h4 *ngIf="displayWinner" class="text-white">
+      {{ winner }} has won the game!
+    </h4>
+  </div>
+  <hr>
+  <app-hand #dealerHand name='Dealer' (endGame)='endGame($event)'></app-hand>
+  <app-hand #playerHand name='Player' (playerFinished)="dealerDraws($event)" (endGame)='endGame($event)' (restart)="restart()"></app-hand>
 </div>

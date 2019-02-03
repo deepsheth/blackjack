@@ -10,6 +10,10 @@
     transition: 300ms;
 }
 
+.card-wrapper:last-child {
+    overflow: visible;
+}
+
 #hand {
-    min-height: 160px;
+    min-height: 215px;
 }

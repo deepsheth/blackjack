@@ -17,16 +17,20 @@ export class CardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.init();
+  }
+
+  toggleCardDirection() {
+    this.faceDown = !this.faceDown;
+  }
+
+  init() {
     if (this.props) {
       this.suit = this.props.suit;
       this.value = this.props.value;
       this.faceDown = this.props.faceDown;
       this.imageUrl = this.props.image;
     }
-  }
-
-  toggleCardDirection() {
-    this.faceDown = !this.faceDown;
   }
 
 }

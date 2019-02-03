@@ -2,6 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Card } from "src/app/models/Card";
 import { DeckofcardsService } from "src/app/services/deckofcards.service";
 import { LocalStorageService } from "ngx-localstorage";
+import { Observable } from "rxjs/internal/Observable";
+import { of } from "rxjs";
+import { tap } from "rxjs/operators";
+import { callbackify } from "util";
 
 @Component({
   selector: "app-hand",
@@ -10,50 +14,111 @@ import { LocalStorageService } from "ngx-localstorage";
 })
 export class HandComponent implements OnInit {
   @Input() name = null;
-  @Input() token: string;
   @Output() playerFinished = new EventEmitter();
   @Output() endGame = new EventEmitter();
+  @Output() restart = new EventEmitter();
 
   cards: Card[] = [];
   handSum = 0;
+  standing = false;
 
   constructor(private cardService: DeckofcardsService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initDealerHands();
+  }
 
   getHandSum() {
-    this.handSum = this.cards.reduce((acc, card): number => {
+    return (this.handSum = this.cards.reduce((acc, card): number => {
       let value = card.value;
+      if (card.faceDown) {
+        return acc;
+      }
       if (isNaN(value)) {
         return acc + 10;
       } else {
         return acc + +value;
       }
-    }, 0);
+    }, 0));
   }
 
-  drawNewCard() {
-    this.cardService.drawCard().subscribe(card => {
-      this.cards = this.cards.concat(card.cards);
-      this.getHandSum();
+  // Only draws one card at a time
+  drawNewCard(faceDown = false) {
+    const $drawNewCard = this.cardService.drawCard().pipe(
+      tap(card => {
+        card.cards[0].faceDown = faceDown;
+        this.cards = this.cards.concat(card.cards);
+        this.getHandSum();
 
-      if (this.name === "Dealer") {
-        if (this.handSum <= 16) {
-          this.drawNewCard();
+        // Busted!
+        if (this.name !== "Dealer" && this.handSum > 21) {
+          this.endGame.emit("Dealer");
+        } else if (this.name !== "Dealer" && this.handSum == 21) {
+          this.endGame.emit(this.name);
         }
-        else {
-          this.endGame.emit();
-        }
-      }
+      })
+    );
+    return $drawNewCard;
+  }
 
-      if (this.name !== "Dealer" && this.handSum > 21) {
-        console.log("Dealer won!");
-        this.endGame.emit("Dealer");
+  dealerDraws() {
+    // Check if the dealer's 2 initial cards are above 16
+    this.makeAllCardsFaceUp();
+    this.getHandSum();
+
+    if (this.name === "Dealer") {
+      if (this.handSum <= 16) {
+        this.drawNewCard().subscribe(() => {
+          if (this.handSum > 16) {
+            this.endGame.emit();
+          } else {
+            this.drawNewCard().subscribe(() => {
+              if (this.handSum > 16) {
+                this.endGame.emit();
+              } else {
+                this.drawNewCard().subscribe(() => {
+                  if (this.handSum > 16) {
+                    this.endGame.emit();
+                  }
+                  // else too many cards to draw
+                });
+              }
+            });
+          }
+        });
+      } else {
+        this.endGame.emit();
+        // console.log("already above 16");
       }
+    }
+  }
+
+  makeAllCardsFaceUp() {
+    return this.cards.forEach(card => {
+      card.faceDown = false;
     });
   }
 
   stand() {
     this.playerFinished.emit("");
+    this.standing = true;
+  }
+
+  initDealerHands() {
+    if (this.name == "Dealer") {
+      this.drawNewCard(true).subscribe();
+      this.drawNewCard().subscribe();
+    }
+  }
+
+  public trackCardFace(index: number, item: Card) {
+    return item.faceDown;
+  }
+
+  reset() {
+    this.cards = [];
+    this.handSum = 0;
+    this.standing = false;
+    this.initDealerHands();
   }
 }

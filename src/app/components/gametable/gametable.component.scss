@@ -1,3 +1,14 @@
 #begin-game {
     height: 100vh;
 }
+
+#title {
+    font-variant: small-caps;
+    text-align: center;
+}
+
+#confetti-origin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}

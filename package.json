@@ -21,6 +21,7 @@
     "@angular/router": "~7.2.0",
     "bootstrap": "4.2.1",
     "core-js": "^2.5.4",
+    "dom-confetti": "^0.1.0",
     "ngx-bootstrap": "^3.2.0",
     "ngx-localstorage": "^2.3.0",
     "rxjs": "~6.3.3",
